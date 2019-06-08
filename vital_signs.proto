@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+// The request message containing the patient's vital signs.
+message VitalSignsRequest {
+  int32 heartRate = 0;
+  int32 bloodPressure = 1;
+  int32 temperature = 2;
+  string deviceId = 3;
+}
+
+// The response message
+message VitalSignsResponse {
+  string message = 1;
+}
+
+service VitalSignsService {
+    // Sends vital signs data
+    rpc publishData (VitalSignsRequest) returns (VitalSignsResponse) {}
+}
