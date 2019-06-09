@@ -12,14 +12,18 @@ const device = new protoDescriptor.VitalSignsService(
   grpc.credentials.createInsecure()
 );
 
-device.publishData(
-  { heartRate: 1, bloodPressure: 2, temperature: 3, deviceId: "VSID0001" },
-  (error, response) => {
-    if (error) {
-      console.error(error);
+const publishData = () => {
+  device.publishData(
+    { heartRate: 1, bloodPressure: 2, temperature: 3, deviceId: "VSID0001", timestampUnix: (new Date).getTime() },
+    (error, response) => {
+      if (error) {
+        console.error(error);
+      }
+      if (response) {
+        console.log(response);
+      }
     }
-    if (response) {
-      console.log(response);
-    }
-  }
-);
+  );
+}
+
+publishData();

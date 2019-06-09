@@ -5,7 +5,7 @@ const PROTO_PATH = 'vital_signs.proto'
 const SERVER_URI = '0.0.0.0:50051'
 
 const publishData = (call, callback) => {
-    console.log("Received data : ", call);
+    console.log("Received data : ", call.request);
 }
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH)
