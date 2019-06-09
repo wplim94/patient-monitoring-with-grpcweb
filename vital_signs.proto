@@ -5,7 +5,7 @@ syntax = "proto3";
 // The request message containing the patient's vital signs.
 // For the sake of simplicity, we only cover a few vital signs,
 // and for Blood Pressure, we assume to have only the systolic (top value)
-message VitalSignsRequest {
+message VitalSigns {
   int32 heartRate = 0;
   int32 bloodPressure = 1;
   int32 temperature = 2;
@@ -26,9 +26,15 @@ message RegisterDeviceResponse {
   string message = 1;
 }
 
+message SubscribeDataRequest {
+  string subscriberId = 1;
+}
+
 service VitalSignsService {
     // Register patient monitoring device in server
     rpc registerDevice (RegisterDeviceRequest) returns (RegisterDeviceResponse) {}
     // Sends vital signs data
-    rpc publishData (VitalSignsRequest) returns (VitalSignsResponse) {}
+    rpc publishData (VitalSigns) returns (VitalSignsResponse) {}
+    // Register patient monitoring device in server
+    rpc subscribeData (SubscribeDataRequest) returns (stream VitalSigns) {}
 }

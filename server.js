@@ -4,7 +4,19 @@ const protoLoader = require('@grpc/proto-loader')
 const PROTO_PATH = 'vital_signs.proto'
 const SERVER_URI = '0.0.0.0:50051'
 
+const packageDefinition = protoLoader.loadSync(PROTO_PATH);
+const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
+
+const PROCESSOR_SERVER_URI = "0.0.0.0:50052";
+
+const controlSystem = new protoDescriptor.VitalSignsService(
+    PROCESSOR_SERVER_URI,
+    grpc.credentials.createInsecure()
+);
+
 const devices = [];
+
+subscribers = [];
 
 const registerDevice = (call, callback) => {
     console.log("Registered device : ", call.request);
@@ -16,15 +28,22 @@ const registerDevice = (call, callback) => {
 
 const publishData = (call, callback) => {
     console.log("Received data : ", call.request);
+    subscribers.forEach(subscriberId => subscriberId.write(call.request))
 }
 
-const packageDefinition = protoLoader.loadSync(PROTO_PATH)
-const protoDescriptor = grpc.loadPackageDefinition(packageDefinition)
+const subscribeData = call => {
+    call.on('cancelled', () => {
+        subscribers = subscribers.filter(subscriberId => subscriberId !== call)
+    })
+  
+    subscribers.push(call)
+}
 
 const server = new grpc.Server()
 server.addService(protoDescriptor.VitalSignsService.service, {
     registerDevice: registerDevice,
-    publishData: publishData
+    publishData: publishData,
+    subscribeData: subscribeData
 })
 server.bind(SERVER_URI, grpc.ServerCredentials.createInsecure())
 
