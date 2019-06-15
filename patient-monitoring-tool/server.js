@@ -9,7 +9,7 @@ const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 
 const devices = [];
 
-const subscribers = [];
+subscribers = [];
 
 const registerDevice = (call, callback) => {
     console.log("Registered device : ", call.request);
