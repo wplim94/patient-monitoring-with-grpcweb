@@ -2,7 +2,7 @@ const grpc = require("grpc");
 const protoLoader = require("@grpc/proto-loader");
 
 const PROTO_PATH = "vital_signs.proto";
-const SERVER_URI = "0.0.0.0:50051";
+const SERVER_URI = "0.0.0.0:9090";
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH);
 const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);

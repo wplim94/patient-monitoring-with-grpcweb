@@ -2,21 +2,14 @@ const grpc = require('grpc')
 const protoLoader = require('@grpc/proto-loader')
 
 const PROTO_PATH = 'vital_signs.proto'
-const SERVER_URI = '0.0.0.0:50051'
+const SERVER_URI = '0.0.0.0:9090'
 
 const packageDefinition = protoLoader.loadSync(PROTO_PATH);
 const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 
-const PROCESSOR_SERVER_URI = "0.0.0.0:50052";
-
-const controlSystem = new protoDescriptor.VitalSignsService(
-    PROCESSOR_SERVER_URI,
-    grpc.credentials.createInsecure()
-);
-
 const devices = [];
 
-subscribers = [];
+const subscribers = [];
 
 const registerDevice = (call, callback) => {
     console.log("Registered device : ", call.request);
