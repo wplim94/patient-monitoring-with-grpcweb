@@ -4,7 +4,7 @@ This is a gPRC and gRPC-web example with node and javascript.
 
 ## How to Run the Server
 
-Make sure you have node and npm install.
+Make sure you have node and npm installed.
 
 1. cd to /patient-monitoring-tool folder
 ```
